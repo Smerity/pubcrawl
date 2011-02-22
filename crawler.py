@@ -2,7 +2,6 @@ import httplib
 import logging
 import math
 import os
-import sys
 import traceback
 import urllib2
 
@@ -16,14 +15,19 @@ from robotexclusionrulesparser import RobotExclusionRulesParser
 
 # Settings and configuration - the default is below
 SETTINGS = {"DEBUG":False, "THREADED":True, "DIE_EARLY":False, "PROCESSES":128,
-  "BUSY_QUEUE_INTERVAL":4, "BUSY_QUEUE_CHUNK":2500}
+  "BUSY_QUEUE_INTERVAL":4, "BUSY_QUEUE_CHUNK":2500, "DEFAULT_ROBOTS_DELAY":1}
 def prepare_settings(directory=None, config_file="crawl.cfg"):
   if not directory:
     directory = os.getcwd()
   filename = os.path.join(directory, config_file)
 
   d = {}
-  execfile(filename, d)
+  try:
+    execfile(filename, d)
+  except IOError:
+    logging.info("No configuration file read found at %s" % filename)
+    return
+
   for key in d:
     if key.isupper():
       SETTINGS[key] = d[key]
@@ -158,7 +162,7 @@ class CrawlRequest(object):
       if delay:
         delay = int(math.ceil(float(rp.get_crawl_delay("*"))))
       else:
-        delay = 1
+        delay = SETTINGS["DEFAULT_ROBOTS_DELAY"]
       self.db.setex(netloc, "1", delay)
 
       return True
