@@ -21,12 +21,12 @@ For actual production use it's suggested to install a local DNS caching server s
 
 ## Todo
 
-- Better busy queue implementation for handling links that are constrained due to the `robots.txt` delay
-- Improve the `robots.txt` parser to handle Unicode and generally more complex formats
-- Implement a flat file storage system for the page contents (as this is currently only useful for the link graph)
-- Allow for modifying both the structure, database layer and location of the Redis database server
-- Make `CrawlRequest` easily extendible so that a new layer of processing can be added arbitrarily
-- The cache for `robots.txt` should be globally accessible and not a localised Python object
-- The link graph may be better stored on disk (or at the very least there should be an interface for storage/manipulation)
-- Store the number of exceptions and their tracebacks for later review
 - Investigate alternative methods for fetching URLs in order to improve the speed and concurrency over `urllib2.urlopen`
+- Better busy queue implementation for handling links that are constrained due to the `robots.txt` delay
+- The link graph may be better stored on disk (or at the very least there should be an interface for storage/manipulation)
+- Implement a flat file storage system for the page contents (as this is currently only useful for the link graph)
+- The cache for `robots.txt` should be globally accessible and not a localised Python object
+- Allow for modifying both the structure, database layer and location of the Redis database server
+- For longer crawls exceptions and their tracebacks are ignored but should be stored for later review
+- Make `CrawlRequest` easily extendible so that a new layer of processing can be added arbitrarily
+- Improve the `robots.txt` parser to handle Unicode and generally more complex formats
